@@ -24,6 +24,11 @@ public class StockPriceService {
 
     private final ConcurrentMap<String, StockPrice> cache = new ConcurrentHashMap<>();
 
+//    @Fallback(fallbackMethod = "getPriceFallback")
+//    @Timeout
+//    @CircuitBreaker(skipOn = BulkheadException.class)
+//    @Bulkhead
+//    @Retry
     public StockPrice getPrice(String ticker) {
         StockPrice result = client.get(ticker);
         cache.put(ticker, result);

@@ -50,3 +50,26 @@ cd user
 mvn clean package
 java -jar target/quarkus-app/quarkus-run.jar # http://localhost:8080/
 ```
+
+## Dashboard
+
+This is derived from the OpenLiberty MP Fault Tolerance Grafana dashboard: https://grafana.com/grafana/dashboards/14193
+
+```bash
+# run Prometheus
+docker run -it --rm --network=host -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+# run Grafana
+docker run -it --rm --network=host grafana/grafana-oss
+
+# add a Prometheus data source to Grafana
+curl -X POST -H "Content-Type: application/json" -d @grafana-data-source.json http://admin:admin@localhost:3000/api/datasources
+
+# add a fault tolerance dashboard to Grafana
+curl -X POST -H "Content-Type: application/json" -d @grafana-dashboard.json http://admin:admin@localhost:3000/api/dashboards/db
+```
+
+Prometheus is available at http://localhost:9090/.
+
+Grafana is available at http://localhost:3000.
+Log in as `admin` with password `admin`, a password change dialog will follow.
